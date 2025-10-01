@@ -15,23 +15,27 @@ const courses = [
   },
 ]
 
-
-
-
-
 function App() {
-  const [checked, setChecked] = useState(1)
+  const [checked, setChecked] = useState([])
 
   const handleChange = (id) => {
     //setChecked
-    setChecked(id)
+    setChecked(pre => {
+      if(checked.includes(id)){
+        // uncheck
+        return (checked.filter(item => item !== id))
+      }else{
+        return [
+          ...checked,
+          id
+        ]
+      }
+    })
   }
 
   const handleSubmit = () => {
     // Call API
-    console.log({
-      id: checked
-    })
+    console.log(checked)
   } 
   
   return (
@@ -40,8 +44,7 @@ function App() {
         return (
           <div key={course.id}> 
             <input
-             type="radio"
-             checked={checked === course.id}
+             type="checkbox"
              onChange={() => handleChange(course.id)}
             />
             {course.name}
