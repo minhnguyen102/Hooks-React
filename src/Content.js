@@ -7,17 +7,31 @@ function Content() {
 
     // ---
     // - Callback luôn được gọi sau khi component được mount (Chú ý khái niệm mount, unmount, render, re-render)
-    const [title, setTitle] = useState("")
+    // useEffect(() => {
+        
+    // })
+    const [posts, setPosts] = useState([])
+    const [title, setTitle] = useState('')
+
     useEffect(() => {
-        console.log("useEffect")
-        document.title = title
-    })
+        fetch("https://dummyjson.com/posts")
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                setPosts(data.posts)
+        })
+    }, [])
+
     return (
         <>
-            <input 
-                value={title} 
-                onChange={e => setTitle(e.target.value)}
-            />
+            <input value={title} onChange={e => setTitle(e.target.value)}/>
+            <ul>
+                {posts.map(post => {
+                    return (
+                        <li key={post.id}>{post.title}</li>
+                    )
+                })}
+            </ul>
         </>
     )
 }
